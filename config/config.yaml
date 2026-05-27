@@ -1,0 +1,42 @@
+project:
+  name: ChurnIQ
+  version: 1.0.0
+
+paths:
+  raw_data: data/raw/cell2celltrain.csv
+  holdout_data: data/raw/cell2cellholdout.csv
+  processed_data: data/processed/
+  models: models/
+  reports: reports/
+  database: database/churniq.db
+
+model:
+  target: churn
+  test_size: 0.15
+  val_size: 0.15
+  random_state: 42
+  cv_folds: 5
+  primary_metric: f1_macro
+
+business:
+  avg_customer_lifetime: 36
+  retention_cost_multiplier:
+    month-to-month: 2.0
+    one_year: 1.0
+    two_year: 0.5
+  risk_tiers:
+    high: 0.70
+    medium: 0.40
+
+features:
+  model_features:
+    - charges_per_month_trend
+    - product_to_charge_ratio
+    - engagement_score
+    - contract_risk_score
+    - tenure_segment
+    - price_sensitivity_flag
+    - loyalty_score
+    - monthly_charge_tier
+    - support_dependency_score
+    - payment_risk_flag

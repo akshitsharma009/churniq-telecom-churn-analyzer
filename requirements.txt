@@ -1,0 +1,34 @@
+# Data
+pandas
+numpy
+
+# Database
+# sqlite3 is built-in
+
+# EDA
+ydata-profiling
+seaborn
+plotly
+
+# ML
+scikit-learn
+xgboost
+lightgbm
+catboost
+imbalanced-learn
+
+# Explainability
+shap
+
+# Experiment Tracking
+mlflow
+
+# Deployment
+streamlit
+
+# Config
+python-dotenv
+pyyaml
+
+# Testing
+pytest
