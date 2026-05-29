@@ -9,8 +9,8 @@ __pycache__/
 envs/
 
 # Data
-data/raw/
-data/processed/
+data/raw/*.csv
+data/processed/*.csv
 
 # Models
 models/*.pkl
