@@ -12,6 +12,9 @@ envs/
 data/raw/*.csv
 data/processed/*.csv
 
+!data/processed/feature_engineered.csv
+!data/processed/revenue_risk_output.csv
+
 # Models
 models/*.pkl
 

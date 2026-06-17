@@ -1,4 +1,7 @@
 import streamlit as st
+import pandas as pd
+import json
+from pathlib import Path
 
 st.set_page_config(
     page_title="ChurnIQ — Intelligence Platform",
@@ -6,6 +9,39 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+# ============================================================
+# DATA LOADING
+# ============================================================
+
+BASE_DIR = Path(__file__).resolve().parent
+
+risk_df = pd.read_csv(
+    BASE_DIR.parent / "data" / "processed" / "revenue_risk_output.csv"
+)
+
+feature_df = pd.read_csv(
+    BASE_DIR.parent / "data" / "processed" / "feature_engineered.csv"
+)
+
+with open(
+    BASE_DIR.parent / "models" / "model_metrics.json",
+    "r"
+) as f:
+    metrics = json.load(f)
+
+total_customers = len(feature_df)
+
+churn_rate = (
+    feature_df["Churn"]
+    .value_counts(normalize=True)
+    .get("Yes", 0)
+    * 100
+)
+
+revenue_at_risk = risk_df["RevenueRiskScore"].sum()
+
+roc_auc = metrics.get("roc_auc", 0)
+threshold = metrics.get("threshold", 0.40)
 
 # ============================================================
 # GLOBAL CSS
@@ -22,8 +58,26 @@ html, body, [class*="css"] {
 }
 .stApp { background: #090E1A !important; }
 #MainMenu, footer, header { visibility: hidden; }
+
+/* Hide default Streamlit page nav at top of sidebar */
+/* Nuclear hide — all known Streamlit nav selectors across versions */
+[data-testid="stSidebarNav"],
+[data-testid="stSidebarNavItems"],
+[data-testid="stSidebarNavSeparator"],
+[data-testid="stSidebarNavLink"],
+div[data-testid="stSidebar"] ul,
+div[data-testid="stSidebar"] > div > div > div > ul,
+section[data-testid="stSidebar"] nav,
+.st-emotion-cache-pbsa9s,
+.st-emotion-cache-1rtdyuf,
+.st-emotion-cache-6tkfeg {
+    display: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
 .block-container {
-    padding-top: 1.5rem !important;
+    padding-top: 1rem !important;
     padding-left: 2.5rem !important;
     padding-right: 2.5rem !important;
     max-width: 1400px !important;
@@ -73,24 +127,46 @@ with st.sidebar:
 <hr style="border:none;border-top:1px solid #1E2D4A;margin:0 0 1.2rem 0;">
 """, unsafe_allow_html=True)
 
-    st.page_link("app.py",                         label="🏠  Home")
-    st.page_link("pages/1_Executive_Overview.py",  label="📊  Executive Overview")
+    st.page_link("app.py", label="🏠 Home")
+    st.page_link("pages/1_Executive_Overview.py", label="📊 Executive Overview")
 
-    st.markdown("""
+    st.markdown(f"""
 <hr style="border:none;border-top:1px solid #1E2D4A;margin:1.5rem 0 1.2rem 0;">
+
 <div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#4A5A7A;margin-bottom:10px;">
   Model Info
 </div>
+
 <div style="background:#141C33;border:1px solid #1E2D4A;border-radius:8px;padding:14px;">
-  <div style="font-size:10px;color:#8B9DC3;margin-bottom:3px;">Champion Model</div>
-  <div style="font-size:15px;font-weight:600;color:#4F8EF7;">XGBoost</div>
-  <div style="font-size:10px;color:#8B9DC3;margin-top:10px;margin-bottom:3px;">ROC-AUC Score</div>
-  <div style="font-size:15px;font-weight:600;color:#00E5A0;">0.6800</div>
-  <div style="font-size:10px;color:#8B9DC3;margin-top:10px;margin-bottom:3px;">Decision Threshold</div>
-  <div style="font-size:15px;font-weight:600;color:#FFB84D;">0.40</div>
+
+  <div style="font-size:10px;color:#8B9DC3;margin-bottom:3px;">
+    Champion Model
+  </div>
+
+  <div style="font-size:15px;font-weight:600;color:#4F8EF7;">
+    XGBoost
+  </div>
+
+  <div style="font-size:10px;color:#8B9DC3;margin-top:10px;margin-bottom:3px;">
+    ROC-AUC Score
+  </div>
+
+  <div style="font-size:15px;font-weight:600;color:#00E5A0;">
+    {roc_auc:.4f}
+  </div>
+
+  <div style="font-size:10px;color:#8B9DC3;margin-top:10px;margin-bottom:3px;">
+    Decision Threshold
+  </div>
+
+  <div style="font-size:15px;font-weight:600;color:#FFB84D;">
+    {threshold:.2f}
+  </div>
+
 </div>
+
 <div style="font-size:10px;color:#2A3F6B;text-align:center;margin-top:2rem;">
-  Cell2Cell Dataset · 51,047 records
+  Cell2Cell Dataset · {total_customers:,} records
 </div>
 """, unsafe_allow_html=True)
 
@@ -129,12 +205,31 @@ st.markdown("""
 c1, c2, c3, c4 = st.columns(4)
 
 tiles = [
-    (c1, "51,047",  "Customers Analyzed", "#4F8EF7"),
-    (c2, "$1.38M",  "Revenue At Risk",    "#FF4D6A"),
-    (c3, "28.82%",  "Churn Rate",         "#FFB84D"),
-    (c4, "0.68",    "Model ROC-AUC",      "#00E5A0"),
+    (
+        c1,
+        f"{total_customers:,}",
+        "Customers Analyzed",
+        "#4F8EF7"
+    ),
+    (
+        c2,
+        f"${revenue_at_risk/1_000_000:.2f}M",
+        "Revenue At Risk",
+        "#FF4D6A"
+    ),
+    (
+        c3,
+        f"{churn_rate:.2f}%",
+        "Churn Rate",
+        "#FFB84D"
+    ),
+    (
+        c4,
+        f"{roc_auc:.2f}",
+        "Model ROC-AUC",
+        "#00E5A0"
+    ),
 ]
-
 for col, val, label, color in tiles:
     with col:
         st.markdown(f"""
@@ -173,8 +268,8 @@ modules = [
      "Monetize churn risk. Every at-risk dollar quantified and mapped to actionable segments.",
      "#FF4D6A"),
     ("🔍", "Churn Drivers",
-     "SHAP-level feature importance revealing what actually drives customers to leave.",
-     "#FFB84D"),
+ "Model-derived feature importance revealing key churn drivers.",
+ "#FFB84D"),
     ("⚡", "Retention Prioritization",
      "High / Medium / Low priority queues so retention teams focus where it counts most.",
      "#00E5A0"),
@@ -203,10 +298,15 @@ for i, (icon, title, desc, color) in enumerate(modules):
 # FOOTER
 # ============================================================
 
-st.markdown("""
+st.markdown(f"""
 <div style="margin-top:3rem;padding-top:1.2rem;border-top:1px solid #1E2D4A;
             display:flex;justify-content:space-between;">
-  <span style="font-size:11px;color:#2A3F6B;">ChurnIQ · Built with XGBoost + Streamlit</span>
-  <span style="font-size:11px;color:#2A3F6B;">Cell2Cell · 51,047 records · Production-Ready</span>
+  <span style="font-size:11px;color:#2A3F6B;">
+    ChurnIQ · Built with XGBoost + Streamlit
+  </span>
+
+  <span style="font-size:11px;color:#2A3F6B;">
+    Cell2Cell · {total_customers:,} records · Production-Ready
+  </span>
 </div>
 """, unsafe_allow_html=True)
