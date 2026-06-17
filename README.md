@@ -700,12 +700,15 @@ This project demonstrates practical experience in:
 
 B.Tech (CSE - AI Specialization)
 
-Aspiring AI/ML Engineer | Data Scientist
+AI/ML Engineer | Data Science Enthusiast | Machine Learning Practitioner
 
 ### Connect
 
 * GitHub: https://github.com/akshitsharma009
-* LinkedIn: Add Your LinkedIn Profile
+* LinkedIn:www.linkedin.com/in/
+akshit-sharma-dev
+
+
 
 ---
 
