@@ -141,29 +141,28 @@ if risk_df is not None:
     max_revenue_risk  = risk_df["RevenueRiskScore"].max()
 
     # Actual churn rate from ground truth labels, NOT from probability threshold
-    if feat_df is not None and "Churn" in feat_df.columns:
-        churn_col = feat_df["Churn"]
-        if churn_col.dtype == object:
-            churned_count  = int((churn_col.str.strip().str.lower() == "yes").sum())
-        else:
-            churned_count  = int((churn_col == 1).sum())
-        retained_count = total_customers - churned_count
-        churn_rate     = churned_count / total_customers * 100
-    else:
-        churned_count  = 14711
-        retained_count = 36336
-        churn_rate     = 28.82
+    threshold = 0.40
 
-    seg_counts = risk_df["PrioritySegment"].value_counts()
-    high_count   = int(seg_counts.get("High",   0))
-    medium_count = int(seg_counts.get("Medium", 0))
-    low_count    = int(seg_counts.get("Low",    0))
+churned_count = int(
+    (risk_df["ChurnProbability"] >= threshold).sum()
+)
 
-    seg_rev    = risk_df.groupby("PrioritySegment")["RevenueRiskScore"].sum()
-    rev_high   = float(seg_rev.get("High",   0))
-    rev_medium = float(seg_rev.get("Medium", 0))
-    rev_low    = float(seg_rev.get("Low",    0))
-    total_rev  = rev_high + rev_medium + rev_low
+retained_count = total_customers - churned_count
+
+churn_rate = (
+    churned_count / total_customers
+) * 100
+
+seg_counts = risk_df["PrioritySegment"].value_counts()
+high_count   = int(seg_counts.get("High",   0))
+medium_count = int(seg_counts.get("Medium", 0))
+low_count    = int(seg_counts.get("Low",    0))
+
+seg_rev    = risk_df.groupby("PrioritySegment")["RevenueRiskScore"].sum()
+rev_high   = float(seg_rev.get("High",   0))
+rev_medium = float(seg_rev.get("Medium", 0))
+rev_low    = float(seg_rev.get("Low",    0))
+total_rev  = rev_high + rev_medium + rev_low
 
 # ── Model metrics from JSON ──
 roc_auc   = metrics.get("roc_auc",   0)
