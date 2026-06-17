@@ -6,22 +6,16 @@ numpy
 # sqlite3 is built-in
 
 # EDA
-ydata-profiling
+
 seaborn
 plotly
 
 # ML
 scikit-learn
 xgboost
-lightgbm
-catboost
+
 imbalanced-learn
 
-# Explainability
-shap
-
-# Experiment Tracking
-mlflow
 
 # Deployment
 streamlit
@@ -30,5 +24,18 @@ streamlit
 python-dotenv
 pyyaml
 
-# Testing
-pytest
+pandas
+numpy
+
+plotly
+seaborn
+
+scikit-learn
+xgboost
+imbalanced-learn
+
+streamlit
+
+python-dotenv
+pyyaml
+joblib
