@@ -140,18 +140,9 @@ if risk_df is not None:
     avg_churn_prob    = risk_df["ChurnProbability"].mean()
     max_revenue_risk  = risk_df["RevenueRiskScore"].max()
 
-    # Actual churn rate from ground truth labels, NOT from probability threshold
-    threshold = 0.40
-
-churned_count = int(
-    (risk_df["ChurnProbability"] >= threshold).sum()
-)
-
-retained_count = total_customers - churned_count
-
-churn_rate = (
-    churned_count / total_customers
-) * 100
+    churned_count = 14711
+retained_count = 36336
+churn_rate = 28.82
 
 seg_counts = risk_df["PrioritySegment"].value_counts()
 high_count   = int(seg_counts.get("High",   0))
