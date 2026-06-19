@@ -12,9 +12,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ============================================================
-# CSS
-# ============================================================
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -24,24 +21,14 @@ html, body, [class*="css"] {
     background-color: #090E1A !important;
     color: #EDF2FF !important;
 }
-.stApp { background: #090E1A !important; }
-#MainMenu, footer, header { visibility: hidden; }
 
-/* Hide default Streamlit page nav at top of sidebar */
-/* Nuclear hide — all known Streamlit nav selectors across versions */
-[data-testid="stSidebarNav"],
-[data-testid="stSidebarNavItems"],
-[data-testid="stSidebarNavSeparator"],
-[data-testid="stSidebarNavLink"],
-div[data-testid="stSidebar"] ul,
-div[data-testid="stSidebar"] > div > div > div > ul,
-section[data-testid="stSidebar"] nav,
-.st-emotion-cache-pbsa9s,
-.st-emotion-cache-1rtdyuf,
-.st-emotion-cache-6tkfeg {
-    display: none !important;
-    height: 0 !important;
-    overflow: hidden !important;
+.stApp {
+    background: #090E1A !important;
+}
+
+#MainMenu,
+footer {
+    visibility: hidden;
 }
 
 .block-container {
@@ -50,16 +37,26 @@ section[data-testid="stSidebar"] nav,
     padding-right: 2.5rem !important;
     max-width: 1400px !important;
 }
+
 [data-testid="stSidebar"] {
     background: #0F1629 !important;
     border-right: 1px solid #1E2D4A !important;
 }
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #090E1A; }
-::-webkit-scrollbar-thumb { background: #2A3F6B; border-radius: 3px; }
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #090E1A;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2A3F6B;
+    border-radius: 3px;
+}
 </style>
 """, unsafe_allow_html=True)
-
 
 # ============================================================
 # SIDEBAR
