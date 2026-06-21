@@ -1,29 +1,3 @@
-# Data
-pandas
-numpy
-
-# Database
-# sqlite3 is built-in
-
-# EDA
-
-seaborn
-plotly
-
-# ML
-scikit-learn
-xgboost
-
-imbalanced-learn
-
-
-# Deployment
-streamlit
-
-# Config
-python-dotenv
-pyyaml
-
 pandas
 numpy
 

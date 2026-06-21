@@ -491,6 +491,32 @@ Includes:
 
 The dashboard automatically loads data from model outputs and processed datasets, enabling dynamic updates whenever underlying data changes.
 
+### Churn Prediction
+
+Includes:
+
+* Interactive customer profiling
+* Real-time churn probability estimation
+* Dynamic risk explanation engine
+* Revenue exposure estimation
+* Retention recommendations
+
+---
+
+### Revenue Risk Intelligence
+
+Includes:
+
+* Revenue At Risk KPIs
+* Priority customer segmentation
+* Top revenue risk customer ranking
+* Revenue Recovery Simulator
+* Executive-level business insights
+## Revenue Risk Intelligence
+
+Beyond churn prediction, ChurnIQ quantifies financial exposure by estimating revenue at risk for every customer.
+
+The platform prioritizes customers into actionable retention segments and provides a Revenue Recovery Simulator that estimates the potential financial impact of successful retention campaigns.
 # 🖼️ Dashboard Preview
 
 ## Home Page
@@ -516,6 +542,16 @@ The dashboard automatically loads data from model outputs and processed datasets
 ![Churn Distribution](reports/figures/churn_distribution.png)
 
 ---
+
+## Churn Prediction
+
+![Churn Prediction](reports/figures/churn_prediction.png)
+
+---
+
+## Revenue Risk Intelligence
+
+![Revenue Risk](reports/figures/revenue_risk.png)
 
 # 📊 Results & Business Impact
 
@@ -558,7 +594,9 @@ churniq/
 ├── app/
 │   ├── app.py
 │   └── pages/
-│       └── 1_Executive_Overview.py
+│       ├── 1_Executive_Overview.py
+│       ├── 2_Churn_Prediction.py
+│       └── 3_Revenue_Risk.py
 │
 ├── data/
 │   ├── raw/
@@ -645,8 +683,12 @@ https://churniq-telecom-churn-analyzer-izfkn7wga2thuzkjddtzon.streamlit.app/
 
 ---
 
-# 🔮 Future Enhancements
+### Product Features
 
+* SHAP-based customer explanations
+* Executive PDF reporting
+* Customer retention campaign tracking
+* What-if scenario analysis
 Potential future improvements include:
 
 ### Machine Learning
